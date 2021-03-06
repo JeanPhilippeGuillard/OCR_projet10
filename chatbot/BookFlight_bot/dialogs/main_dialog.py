@@ -81,23 +81,6 @@ class MainDialog(ComponentDialog):
             # Run the BookingDialog giving it whatever details we have from the LUIS call.
             return await step_context.begin_dialog(self._booking_dialog_id, luis_result)
 
-        if intent == Intent.GET_WEATHER.value:
-            get_weather_text = "TODO: get weather flow here"
-            get_weather_message = MessageFactory.text(
-                get_weather_text, get_weather_text, InputHints.ignoring_input
-            )
-            await step_context.context.send_activity(get_weather_message)
-
-        else:
-            didnt_understand_text = (
-                "Sorry, I didn't get that. Please try asking in a different way"
-            )
-            didnt_understand_message = MessageFactory.text(
-                didnt_understand_text, didnt_understand_text, InputHints.ignoring_input
-            )
-            await step_context.context.send_activity(didnt_understand_message)
-
-        return await step_context.next(None)
 
     async def final_step(self, step_context: WaterfallStepContext) -> DialogTurnResult:
         # If the child dialog ("BookingDialog") was cancelled or the user failed to confirm,
