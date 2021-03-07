@@ -15,15 +15,15 @@ from botbuilder.schema import InputHints
 from .cancel_and_help_dialog import CancelAndHelpDialog
 
 
-class DateResolverDialog(CancelAndHelpDialog):
+class DepDateResolverDialog(CancelAndHelpDialog):
     def __init__(self, dialog_id: str = None):
-        super(DateResolverDialog, self).__init__(
-            dialog_id or DateResolverDialog.__name__
+        super(DepDateResolverDialog, self).__init__(
+            dialog_id or DepDateResolverDialog.__name__
         )
 
         self.add_dialog(
             DateTimePrompt(
-                DateTimePrompt.__name__, DateResolverDialog.datetime_prompt_validator
+                DateTimePrompt.__name__, DepDateResolverDialog.datetime_prompt_validator
             )
         )
         self.add_dialog(
@@ -39,7 +39,11 @@ class DateResolverDialog(CancelAndHelpDialog):
     ) -> DialogTurnResult:
         timex = step_context.options
 
-        prompt_msg_text = "On what date would you like to travel?"
+        print(step_context)
+
+        if timex is None:
+            prompt_msg_text = "On what date will you be leaving?"
+
         prompt_msg = MessageFactory.text(
             prompt_msg_text, prompt_msg_text, InputHints.expecting_input
         )
