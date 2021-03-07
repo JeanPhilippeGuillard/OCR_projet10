@@ -25,6 +25,7 @@ class BookingDialog(CancelAndHelpDialog):
                     self.destination_step,
                     self.origin_step,
                     self.travel_date_step,
+                    self.budget_step,
                     self.confirm_step,
                     self.final_step,
                 ],
@@ -94,6 +95,26 @@ class BookingDialog(CancelAndHelpDialog):
             )
         return await step_context.next(booking_details.travel_date)
 
+    async def budget_step(self, step_context: WaterfallStepContext) -> DialogTurnResult:
+        """
+        If a budget has not been provided, prompt for one.
+        :param step_context:
+        :return DialogTurnResult:
+        """
+        booking_details = step_context.options
+
+        # Capture the response to the previous step's prompt
+        booking_details.travel_date = step_context.result
+        if booking_details.budget is None:
+            message_text = "What is yout budget?"
+            prompt_message = MessageFactory.text(
+                message_text, message_text, InputHints.expecting_input
+            )
+            return await step_context.prompt(
+                TextPrompt.__name__, PromptOptions(prompt=prompt_message)
+            )
+        return await step_context.next(booking_details.budget)
+
     async def confirm_step(
         self, step_context: WaterfallStepContext
     ) -> DialogTurnResult:
@@ -105,10 +126,11 @@ class BookingDialog(CancelAndHelpDialog):
         booking_details = step_context.options
 
         # Capture the results of the previous step
-        booking_details.travel_date = step_context.result
+        booking_details.budget = step_context.result
         message_text = (
             f"Please confirm, I have you traveling to: { booking_details.destination } from: "
-            f"{ booking_details.origin } on: { booking_details.travel_date}."
+            f"{ booking_details.origin } on: { booking_details.travel_date}"
+            f"for: { booking_details.budget}"
         )
         prompt_message = MessageFactory.text(
             message_text, message_text, InputHints.expecting_input
