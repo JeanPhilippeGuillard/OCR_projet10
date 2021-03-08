@@ -4,6 +4,9 @@
 
 import os
 
+# Insight key to record logs and transfer them to Azure Insights:
+INSIGHT_KEY = "bd0e01dc-2753-4227-ae8f-06fb53970148"
+
 """ Bot Configuration """
 
 

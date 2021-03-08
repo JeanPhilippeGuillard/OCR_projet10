@@ -12,6 +12,13 @@ from botbuilder.core import (
 )
 from botbuilder.schema import ActivityTypes, Activity
 
+import logging
+from datetime import datetime
+from opencensus.ext.azure.log_exporter import AzureLogHandler
+
+from config import INSIGHT_KEY
+INSIGHT_CONNECTION_STRING = "InstrumentationKey=" + INSIGHT_KEY
+
 
 class AdapterWithErrorHandler(BotFrameworkAdapter):
     def __init__(
@@ -29,6 +36,13 @@ class AdapterWithErrorHandler(BotFrameworkAdapter):
             #       application insights.
             print(f"\n [on_turn_error] unhandled error: {error}", file=sys.stderr)
             traceback.print_exc()
+
+            # Sending error message to Azure Insights
+            logger = logging.getLogger(__name__)
+            logger.addHandler(AzureLogHandler(connection_string=INSIGHT_CONNECTION_STRING))
+            utc_time = datetime.utcnow()
+            log_message = f"\n[on_turn_error] unhandled error: {error} at {utc_time}"
+            logger.warning(log_message)
 
             # Send a message to the user
             await context.send_activity("The bot encountered an error or bug.")
