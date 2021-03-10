@@ -51,6 +51,8 @@ class LuisHelper:
                 else None
             )
 
+            print("\nintent :", intent)
+
             if intent == Intent.BOOK_FLIGHT.value:
                 result = BookingDetails()
 
@@ -58,28 +60,18 @@ class LuisHelper:
                 to_entities = recognizer_result.entities.get("$instance", {}).get(
                     "To", []
                 )
-                if len(to_entities) > 0:
-                    if recognizer_result.entities.get("To", [{"$instance": {}}])[0][
-                        "$instance"
-                    ]:
-                        result.destination = to_entities[0]["text"].capitalize()
-                    else:
-                        result.unsupported_airports.append(
-                            to_entities[0]["text"].capitalize()
-                        )
+
+                print("\nto_entities :", to_entities)
+
+                if len(to_entities) > 0:               
+                    result.destination = to_entities[0]["text"].capitalize()
+
 
                 from_entities = recognizer_result.entities.get("$instance", {}).get(
                     "From", []
                 )
                 if len(from_entities) > 0:
-                    if recognizer_result.entities.get("From", [{"$instance": {}}])[0][
-                        "$instance"
-                    ]:
-                        result.origin = from_entities[0]["text"].capitalize()
-                    else:
-                        result.unsupported_airports.append(
-                            from_entities[0]["text"].capitalize()
-                        )
+                    result.origin = from_entities[0]["text"].capitalize()
 
                 # This value will be a TIMEX. And we are only interested in a Date so grab the first result and drop
                 # the Time part. TIMEX is a format that represents DateTime expressions that include some ambiguity.
@@ -95,8 +87,9 @@ class LuisHelper:
 
                 else:
                     result.travel_date = None
-
+                    
         except Exception as exception:
             print(exception)
+
 
         return intent, result

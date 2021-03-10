@@ -13,7 +13,7 @@ class DefaultConfig:
     PORT = 3978
     APP_ID = os.environ.get("MicrosoftAppId", "")
     APP_PASSWORD = os.environ.get("MicrosoftAppPassword", "")
-    LUIS_APP_ID = os.environ.get("LuisAppId", "4d36e06a-7acf-48d3-a945-6d124d219be2")
-    LUIS_API_KEY = os.environ.get("LuisAPIKey", "2246a01e45d447ceb6f9799e72a75504")
+    LUIS_APP_ID = os.environ.get("LuisAppId", "d38f9507-9700-45f7-a77b-b5e32fe593ac") # FlightBooking-v3
+    LUIS_API_KEY = os.environ.get("LuisAPIKey", "2246a01e45d447ceb6f9799e72a75504") # Authoring key
     # LUIS endpoint host name, ie "westus.api.cognitive.microsoft.com"
     LUIS_API_HOST_NAME = os.environ.get("LuisAPIHostName", "westeurope.api.cognitive.microsoft.com")
