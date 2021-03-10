@@ -97,6 +97,7 @@ class LuisHelper:
                     result.travel_date = None
 
         except Exception as exception:
+            print("exception in Luis helper")
             print(exception)
 
         return intent, result

@@ -55,7 +55,7 @@ class BookingDialog(CancelAndHelpDialog):
             return await step_context.prompt(
                 TextPrompt.__name__, PromptOptions(prompt=prompt_message)
             )
-        return await step_context.next(booking_details.destination_)
+        return await step_context.next(booking_details.destination)
 
     async def origin_step(self, step_context: WaterfallStepContext) -> DialogTurnResult:
         """
